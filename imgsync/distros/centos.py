@@ -97,10 +97,10 @@ class CentOS(distros.BaseDistro):
 
         image = self.glance.get_image_by_name(name)
         if image:
-            if image.sha512 != checksum:
+            if image.get("imgsync.sha512") != checksum:
                 LOG.error("Glance image chechsum (%s, %s)and official "
                           "checksum %s missmatch.",
-                          image.id, image.sha512, checksum)
+                          image.id, image.get("imgsync.sha512"), checksum)
             else:
                 LOG.info("Image already downloaded and synchroniced")
             return

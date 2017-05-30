@@ -33,25 +33,44 @@ class Debian(distros.BaseDistro):
 
     def __init__(self):
         super(Debian, self).__init__()
-        self.filename = "debian-%s-openstack-amd64.qcow2" % self.version
+        self.filename = None
 
     @property
     def what(self):
         return "latest"
 
     def _sync_latest(self):
-        LOG.info("Downloading %s", self.filename)
         base_url = self.url
 
-        # Get the checksum from the index file
-        index = requests.get(base_url + self.filename + ".index")
+        checksum_file = base_url + "SHA256SUMS"
+        checksum_file = requests.get(checksum_file)
+        aux = dict([list(reversed(line.split()))
+                    for line in checksum_file.text.splitlines()])
+
+        filename = None
+        for k, v in aux.items():
+            if k.endswith(".qcow2"):
+                filename = k
+                checksum = v
+                break
+
+        if filename is None:
+            LOG.error("Could not get image file")
+            return
+
+        LOG.info("Downloading %s", filename)
+
+        # Get the revision from the index file
+        index = requests.get(base_url + filename + ".index")
+        if not index.ok:
+            LOG.error("Cannot download image from server, got %s", index.status_code)
+            return
         parser = configparser.SafeConfigParser()
         parser.readfp(six.StringIO(index.text))
         section = parser.sections()[0]
-        checksum = parser.get(section, "checksum[sha512]")
         revision = parser.get(section, "revision")
 
-        url = base_url + self.filename
+        url = base_url + filename
         architecture = "x86_64"
         file_format = "qcow2"
 
@@ -91,7 +110,7 @@ class Debian(distros.BaseDistro):
 
 
 class Debian8(Debian):
-    url = "https://cdimage.debian.org/cdimage/openstack/current-8/"
+    url = "https://cdimage.debian.org/cdimage/openstack/current/"
     debian_release = "jessie"
     version = "8"
 

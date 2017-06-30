@@ -110,9 +110,15 @@ class Debian(distros.BaseDistro):
 
 
 class Debian8(Debian):
-    url = "https://cdimage.debian.org/cdimage/openstack/current/"
+    url = "https://cdimage.debian.org/cdimage/openstack/current-8/"
     debian_release = "jessie"
     version = "8"
+
+
+class Debian9(Debian):
+    url = "https://cdimage.debian.org/cdimage/openstack/current-9/"
+    debian_release = "stretch"
+    version = "9"
 
 
 class DebianTesting(Debian):

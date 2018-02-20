@@ -89,7 +89,7 @@ class Debian(distros.BaseDistro):
 
         location = None
         try:
-            location = self._download_one(url, ("sha512", checksum))
+            location = self._download_one(url, ("sha256", checksum))
             self.glance.upload(location,
                                name,
                                architecture=architecture,

@@ -30,6 +30,8 @@ LOG = log.getLogger(__name__)
 @six.add_metaclass(abc.ABCMeta)
 class Ubuntu(distros.BaseDistro):
     url = None
+    ubuntu_release = None
+    version = None
 
     def __init__(self):
         super(Ubuntu, self).__init__()
@@ -38,8 +40,12 @@ class Ubuntu(distros.BaseDistro):
     def what(self):
         return "latest"
 
+    @property
+    def filename(self):
+        return "%s-server-cloudimg-amd64-disk1.img" % self.ubuntu_release
+
     def _sync_latest(self):
-        filename = "%s-server-cloudimg-amd64-disk1.img" % self.ubuntu_release
+        filename = self.filename
         LOG.info("Downloading %s", filename)
         base_url = self.url + "current/"
         checksum_file = base_url + "SHA256SUMS"
@@ -99,3 +105,10 @@ class Ubuntu16(Ubuntu):
     url = "https://cloud-images.ubuntu.com/xenial/"
     ubuntu_release = "xenial"
     version = "16.04"
+
+
+class Ubuntu18(Ubuntu):
+    url = "https://cloud-images.ubuntu.com/bionic/"
+    ubuntu_release = "bionic"
+    version = "18.04"
+    filename = "%s-server-cloudimg-amd64.img" % ubuntu_release

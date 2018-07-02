@@ -28,7 +28,7 @@ from imgsync import glance
 
 SUPPORTED_DISTROS = [
     'centos6', 'centos7',
-    'ubuntu14', 'ubuntu16',
+    'ubuntu14', 'ubuntu16', 'ubuntu18',
     'debian8', 'debian9', 'debiantesting'
 ]
 
@@ -133,11 +133,13 @@ class BaseDistro(object):
 
         if sha.hexdigest() != checksum[1]:
             os.remove(location.name)
-            raise exception.ImageVerificationFailed(
+            e = exception.ImageVerificationFailed(
                 url=url,
                 expected=checksum,
                 obtained=sha.hexdigest()
             )
+            LOG.error(e)
+            raise e
 
         LOG.info("Image '%s' downloaded", url)
         return location

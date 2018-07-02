@@ -21,6 +21,7 @@ Currently the following images repositories are supported:
 
 - Ubuntu 14.04: https://cloud-images.ubuntu.com/trusty/
 - Ubuntu 16.04: https://cloud-images.ubuntu.com/xenial/
+- Ubuntu 18.04: https://cloud-images.ubuntu.com/bionic/
 
 ## Installation
 

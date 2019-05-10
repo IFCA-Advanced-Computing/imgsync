@@ -1,7 +1,8 @@
-# Image Synchronization tool
+# OpenStack Glance Image Synchronization tool
 
-This application will download images from the distribution repository, and
-upload them to glance.
+This application will download images from the official distribution
+repository, and upload them to OpenStack Glance. It is possible to define
+custom properties and prefixes for all the synced images.
 
 ## Available distribution repositories
 
@@ -25,7 +26,11 @@ Currently the following images repositories are supported:
 
 ## Installation
 
-Install it via pip:
+Install it via PyPI:
+
+    pip install imgsync
+
+Or install it from the repo:
 
     git clone https://github.com/alvarolopez/imgsync
     pip install imgsync
@@ -42,12 +47,16 @@ adjust it your your needs. Take into account the following:
 - You can define a prefix to be used for all the distribution names with the
   `prefix` option.
 
+- Additionally you can add some custom image properties, using the `properties`
+  option, that can be repeated multiple times for multiple properties.
+
 - The list of images to be downloaded is configured via the `distributions`
   option.
 
 - CentOS distributions define additional options to allow the download of
   all the published images, or just the latest one. This is configured in
-  the `[centos6]` and `[centos6]` sections.
+  the `[centos6]` and `[centos6]` sections. This is not possible for Debian and
+  Ubuntu.
 
 ### Image properties
 

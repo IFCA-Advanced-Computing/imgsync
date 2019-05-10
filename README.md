@@ -14,7 +14,7 @@ Currently the following images repositories are supported:
 
 ### Debian
 
-- Debian 8: https://cdimage.debian.org/cdimage/openstack/current-8/
+- Debian 9: https://cdimage.debian.org/cdimage/openstack/current-9/
 - Debian testing: https://cdimage.debian.org/cdimage/openstack/testing/
 
 ### Ubuntu

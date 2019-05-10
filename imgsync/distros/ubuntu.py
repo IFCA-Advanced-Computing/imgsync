@@ -50,6 +50,10 @@ class Ubuntu(distros.BaseDistro):
         base_url = self.url + "current/"
         checksum_file = base_url + "SHA256SUMS"
         checksum_file = requests.get(checksum_file)
+        if checksum_file.status_code != 200:
+            LOG.error("Could not get checksums file %s" % checksum_file.url)
+            return
+
         aux = dict([list(reversed(line.split()))
                     for line in checksum_file.text.splitlines()])
 

@@ -113,16 +113,16 @@ class Debian(distros.BaseDistro):
         self._sync_latest()
 
 
-class Debian8(Debian):
-    url = "https://cdimage.debian.org/cdimage/openstack/current-8/"
-    debian_release = "jessie"
-    version = "8"
-
-
 class Debian9(Debian):
     url = "https://cdimage.debian.org/cdimage/openstack/current-9/"
     debian_release = "stretch"
     version = "9"
+
+
+class Debian10(Debian):
+    url = "https://cdimage.debian.org/cdimage/openstack/current-10/"
+    debian_release = "buster"
+    version = "10"
 
 
 class DebianTesting(Debian):

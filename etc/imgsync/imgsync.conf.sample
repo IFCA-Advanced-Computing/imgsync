@@ -16,8 +16,8 @@
 #properties = <None>
 
 # List of distributions to sync (supported values are centos6, centos7,
-# ubuntu14, ubuntu16, debian8, debiantesting). (list value)
-#distributions = centos6,centos7,ubuntu14,ubuntu16,debian8,debiantesting
+# ubuntu14, ubuntu16, ubuntu18, debian9, debiantesting). (list value)
+#distributions = centos6,centos7,ubuntu14,ubuntu16,ubuntu18,debian9,debiantesting
 
 #
 # From oslo.log

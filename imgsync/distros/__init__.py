@@ -29,7 +29,7 @@ from imgsync import glance
 SUPPORTED_DISTROS = [
     'centos6', 'centos7',
     'ubuntu14', 'ubuntu16', 'ubuntu18',
-    'debian9', 'debiantesting'
+    'debian9', 'debian10', 'debiantesting'
 ]
 
 opts = [

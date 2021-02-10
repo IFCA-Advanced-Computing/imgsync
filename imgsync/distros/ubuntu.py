@@ -116,3 +116,10 @@ class Ubuntu18(Ubuntu):
     ubuntu_release = "bionic"
     version = "18.04"
     filename = "%s-server-cloudimg-amd64.img" % ubuntu_release
+
+
+class Ubuntu20(Ubuntu):
+    url = "https://cloud-images.ubuntu.com/focal/"
+    ubuntu_release = "focal"
+    version = "20.04"
+    filename = "%s-server-cloudimg-amd64.img" % ubuntu_release

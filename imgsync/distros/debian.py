@@ -123,9 +123,3 @@ class Debian10(Debian):
     url = "https://cdimage.debian.org/cdimage/openstack/current-10/"
     debian_release = "buster"
     version = "10"
-
-
-class DebianTesting(Debian):
-    url = "https://cdimage.debian.org/cdimage/openstack/testing/"
-    debian_release = "testing"
-    version = "testing"

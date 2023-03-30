@@ -114,12 +114,12 @@ class Debian(distros.BaseDistro):
 
 
 class Debian9(Debian):
-    url = "https://cdimage.debian.org/cdimage/openstack/current-9/"
+    url = "https://repo.ifca.es/debian-cdimage-openstack/OpenStack/current-9/"
     debian_release = "stretch"
     version = "9"
 
 
 class Debian10(Debian):
-    url = "https://cdimage.debian.org/cdimage/openstack/current-10/"
+    url = "https://repo.ifca.es/debian-cdimage-openstack/OpenStack/current-10/"
     debian_release = "buster"
     version = "10"

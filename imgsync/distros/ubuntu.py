@@ -100,33 +100,33 @@ class Ubuntu(distros.BaseDistro):
 
 
 class Ubuntu14(Ubuntu):
-    url = "https://cloud-images.ubuntu.com/trusty/"
+    url = "https://repo.ifca.es/ubuntu-cloud-images/trusty/"
     ubuntu_release = "trusty"
     version = "14.04"
 
 
 class Ubuntu16(Ubuntu):
-    url = "https://cloud-images.ubuntu.com/xenial/"
+    url = "https://repo.ifca.es/ubuntu-cloud-images/xenial/"
     ubuntu_release = "xenial"
     version = "16.04"
 
 
 class Ubuntu18(Ubuntu):
-    url = "https://cloud-images.ubuntu.com/bionic/"
+    url = "https://repo.ifca.es/ubuntu-cloud-images/bionic/"
     ubuntu_release = "bionic"
     version = "18.04"
     filename = "%s-server-cloudimg-amd64.img" % ubuntu_release
 
 
 class Ubuntu20(Ubuntu):
-    url = "https://cloud-images.ubuntu.com/focal/"
+    url = "https://repo.ifca.es/ubuntu-cloud-images/focal/"
     ubuntu_release = "focal"
     version = "20.04"
     filename = "%s-server-cloudimg-amd64.img" % ubuntu_release
 
 
 class Ubuntu22(Ubuntu):
-    url = "https://cloud-images.ubuntu.com/jammy/"
+    url = "https://repo.ifca.es/ubuntu-cloud-images/jammy/"
     ubuntu_release = "jammy"
     version = "22.04"
     filename = "%s-server-cloudimg-amd64.img" % ubuntu_release

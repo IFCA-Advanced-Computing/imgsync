@@ -123,3 +123,10 @@ class Ubuntu20(Ubuntu):
     ubuntu_release = "focal"
     version = "20.04"
     filename = "%s-server-cloudimg-amd64.img" % ubuntu_release
+
+
+class Ubuntu22(Ubuntu):
+    url = "https://cloud-images.ubuntu.com/jammy/"
+    ubuntu_release = "jammy"
+    version = "22.04"
+    filename = "%s-server-cloudimg-amd64.img" % ubuntu_release

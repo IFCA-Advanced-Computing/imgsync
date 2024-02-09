@@ -13,13 +13,13 @@
 # under the License.
 
 import abc
+import datetime
 import os
 
 from oslo_config import cfg
 from oslo_log import log
 import requests
 import six
-from six.moves import configparser
 
 from imgsync import distros
 
@@ -51,33 +51,20 @@ class Debian(distros.BaseDistro):
         aux = dict([list(reversed(line.split()))
                     for line in checksum_file.text.splitlines()])
 
-        filename = None
+        filename = "debian-%s-genericcloud-amd64.qcow2" % self.version
+
         for k, v in aux.items():
-            if k.endswith(".qcow2"):
-                filename = k
+            if k == filename:
                 checksum = v
                 break
 
-        if filename is None:
-            LOG.error("Could not get image file")
-            return
-
         LOG.info("Downloading %s", filename)
-
-        # Get the revision from the index file
-        index = requests.get(base_url + filename + ".index")
-        if not index.ok:
-            LOG.error("Cannot download image from server, got %s", index.status_code)
-            return
-        parser = configparser.SafeConfigParser()
-        parser.readfp(six.StringIO(index.text))
-        section = parser.sections()[0]
-        revision = parser.get(section, "revision")
 
         url = base_url + filename
         architecture = "x86_64"
         file_format = "qcow2"
 
+        revision = datetime.datetime.now().strftime("%Y%m%d")
         prefix = CONF.prefix
         name = "%sDebian %s [%s]" % (prefix, self.version, revision)
 

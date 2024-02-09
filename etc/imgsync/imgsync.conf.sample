@@ -18,7 +18,7 @@
 # List of distributions to sync (supported values are centos6, centos7,
 # ubuntu14, ubuntu16, ubuntu18, ubuntu20, debian9, debian10, debiantesting).
 # (list value)
-#distributions = centos6,centos7,ubuntu14,ubuntu16,ubuntu18,ubuntu20,debian9,debian10,debiantesting
+#distributions = centos6,centos7,ubuntu14,ubuntu16,ubuntu18,ubuntu20,debian10,debian11,debian12
 
 #
 # From oslo.log

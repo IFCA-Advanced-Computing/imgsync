@@ -42,7 +42,7 @@ class Debian(distros.BaseDistro):
     def _sync_latest(self):
         base_url = self.url
 
-        checksum_file = base_url + "SHA256SUMS"
+        checksum_file = base_url + "SHA512SUMS"
         checksum_file = requests.get(checksum_file)
         if checksum_file.status_code != 200:
             LOG.error("Could not get checksums file %s" % checksum_file.url)
@@ -83,23 +83,23 @@ class Debian(distros.BaseDistro):
 
         image = self.glance.get_image_by_name(name)
         if image:
-            if image.get("imgsync.sha256") != checksum:
+            if image.get("imgsync.sha512") != checksum:
                 LOG.error("Glance image chechsum (%s, %s)and official "
                           "checksum %s missmatch.",
-                          image.id, image.get("imgsync.sha256"), checksum)
+                          image.id, image.get("imgsync.sha512"), checksum)
             else:
                 LOG.info("Image already downloaded and synchroniced")
             return
 
         location = None
         try:
-            location = self._download_one(url, ("sha256", checksum))
+            location = self._download_one(url, ("sha512", checksum))
             self.glance.upload(location,
                                name,
                                architecture=architecture,
                                file_format=file_format,
                                container_format="bare",
-                               checksum={"sha256": checksum},
+                               checksum={"sha512": checksum},
                                os_distro="ubuntu",
                                os_version=self.version)
             LOG.info("Synchronized %s", name)
@@ -113,13 +113,20 @@ class Debian(distros.BaseDistro):
         self._sync_latest()
 
 
-class Debian9(Debian):
-    url = "https://repo.ifca.es/debian-cdimage-openstack/OpenStack/current-9/"
-    debian_release = "stretch"
-    version = "9"
-
 
 class Debian10(Debian):
-    url = "https://repo.ifca.es/debian-cdimage-openstack/OpenStack/current-10/"
     debian_release = "buster"
     version = "10"
+    url = "https://cdimage.debian.org/cdimage/cloud/%s/latest/" % debian_release
+
+
+class Debian11(Debian):
+    debian_release = "bullseye"
+    version = "11"
+    url = "https://cdimage.debian.org/cdimage/cloud/%s/latest/" % debian_release
+
+
+class Debian12(Debian):
+    debian_release = "bookworm"
+    version = "12"
+    url = "https://cdimage.debian.org/cdimage/cloud/%s/latest/" % debian_release

@@ -19,8 +19,8 @@ import imgsync.glance
 
 def list_opts():
     return [
-        ('DEFAULT', imgsync.distros.opts),
-        ('centos6', imgsync.distros.centos.c6_opts),
-        ('centos7', imgsync.distros.centos.c7_opts),
-        ('keystone_auth', imgsync.glance.opts),
+        ("DEFAULT", imgsync.distros.opts),
+        ("centos6", imgsync.distros.centos.c6_opts),
+        ("centos7", imgsync.distros.centos.c7_opts),
+        ("keystone_auth", imgsync.glance.opts),
     ]

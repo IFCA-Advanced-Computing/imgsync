@@ -54,8 +54,9 @@ class Ubuntu(distros.BaseDistro):
             LOG.error("Could not get checksums file %s" % checksum_file.url)
             return
 
-        aux = dict([list(reversed(line.split()))
-                    for line in checksum_file.text.splitlines()])
+        aux = dict(
+            [list(reversed(line.split())) for line in checksum_file.text.splitlines()]
+        )
 
         checksum = aux["*%s" % filename]
         url = base_url + filename
@@ -71,9 +72,13 @@ class Ubuntu(distros.BaseDistro):
         image = self.glance.get_image_by_name(name)
         if image:
             if image.get("imgsync.sha256") != checksum:
-                LOG.error("Glance image chechsum (%s, %s)and official "
-                          "checksum %s missmatch.",
-                          image.id, image.get("imgsync.sha256"), checksum)
+                LOG.error(
+                    "Glance image chechsum (%s, %s)and official "
+                    "checksum %s missmatch.",
+                    image.id,
+                    image.get("imgsync.sha256"),
+                    checksum,
+                )
             else:
                 LOG.info("Image already downloaded and synchroniced")
             return
@@ -81,21 +86,22 @@ class Ubuntu(distros.BaseDistro):
         location = None
         try:
             location = self._download_one(url, ("sha256", checksum))
-            self.glance.upload(location,
-                               name,
-                               architecture=architecture,
-                               file_format=file_format,
-                               container_format="bare",
-                               checksum={"sha256": checksum},
-                               os_distro="ubuntu",
-                               os_version=self.version)
+            self.glance.upload(
+                location,
+                name,
+                architecture=architecture,
+                file_format=file_format,
+                container_format="bare",
+                checksum={"sha256": checksum},
+                os_distro="ubuntu",
+                os_version=self.version,
+            )
         finally:
             if location is not None:
                 os.remove(location.name)
 
     def _sync_all(self):
-        LOG.warn("Sync all not supported for Ubuntu, syncing "
-                 "the latest one.")
+        LOG.warn("Sync all not supported for Ubuntu, syncing " "the latest one.")
         self._sync_latest()
 
 

@@ -30,19 +30,23 @@ LOG = log.getLogger(__name__)
 # can load them when generating the config file.
 
 c6_opts = [
-    cfg.StrOpt('download',
-               choices=['all', 'latest'],
-               default='latest',
-               help='What to sync, "all" will download and sync all images, '
-                    '"latest" will donwload and sync only the latest one.')
+    cfg.StrOpt(
+        "download",
+        choices=["all", "latest"],
+        default="latest",
+        help='What to sync, "all" will download and sync all images, '
+        '"latest" will donwload and sync only the latest one.',
+    )
 ]
 
 c7_opts = [
-    cfg.StrOpt('download',
-               choices=['all', 'latest'],
-               default='latest',
-               help='What to sync, "all" will download and sync all images, '
-                    '"latest" will donwload and sync only the latest one.')
+    cfg.StrOpt(
+        "download",
+        choices=["all", "latest"],
+        default="latest",
+        help='What to sync, "all" will download and sync all images, '
+        '"latest" will donwload and sync only the latest one.',
+    )
 ]
 
 CONF = cfg.CONF
@@ -84,10 +88,9 @@ class CentOS(distros.BaseDistro):
 
     def _sync_one(self, section):
         LOG.info("Downloading %s", section)
-        (
-            filename, name, revision, arch,
-            file_format, checksum
-        ) = self._get_url_from_section(section)
+        (filename, name, revision, arch, file_format, checksum) = (
+            self._get_url_from_section(section)
+        )
 
         prefix = CONF.prefix
         name = "%s%s [%s] " % (prefix, name, revision)
@@ -95,9 +98,13 @@ class CentOS(distros.BaseDistro):
         image = self.glance.get_image_by_name(name)
         if image:
             if image.get("imgsync.sha512") != checksum:
-                LOG.error("Glance image chechsum (%s, %s)and official "
-                          "checksum %s missmatch.",
-                          image.id, image.get("imgsync.sha512"), checksum)
+                LOG.error(
+                    "Glance image chechsum (%s, %s)and official "
+                    "checksum %s missmatch.",
+                    image.id,
+                    image.get("imgsync.sha512"),
+                    checksum,
+                )
             else:
                 LOG.info("Image already downloaded and synchroniced")
             return
@@ -107,14 +114,16 @@ class CentOS(distros.BaseDistro):
         try:
             location = self._download_one(url, ("sha512", checksum))
             fd = lzma.open(location.name, "rb")
-            self.glance.upload_with_fd(fd,
-                                       name,
-                                       architecture=arch,
-                                       file_format=file_format,
-                                       container_format="bare",
-                                       checksum={"sha512": checksum},
-                                       os_distro="centos",
-                                       os_version=self.version)
+            self.glance.upload_with_fd(
+                fd,
+                name,
+                architecture=arch,
+                file_format=file_format,
+                container_format="bare",
+                checksum={"sha512": checksum},
+                os_distro="centos",
+                os_version=self.version,
+            )
         finally:
             if location is not None:
                 os.remove(location.name)

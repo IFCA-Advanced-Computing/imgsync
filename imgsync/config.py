@@ -19,6 +19,4 @@ log.register_options(cfg.CONF)
 
 
 def parse_args(argv, default_config_files=None):
-    cfg.CONF(argv[1:],
-             project='imgsync',
-             default_config_files=default_config_files)
+    cfg.CONF(argv[1:], project="imgsync", default_config_files=default_config_files)

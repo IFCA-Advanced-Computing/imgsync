@@ -29,7 +29,7 @@ class ImgSyncException(Exception):
             except Exception:
                 # kwargs doesn't match a variable in the message
                 # log the issue and the kwargs
-                LOG.exception('Exception in string format operation')
+                LOG.exception("Exception in string format operation")
                 for name, value in kwargs.iteritems():
                     LOG.error("%s: %s" % (name, value))
                 message = self.msg_fmt

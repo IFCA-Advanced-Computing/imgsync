@@ -13,10 +13,7 @@
 # under the License.
 
 import abc
-try:
-    import lzma
-except ImportError:
-    from backports import lzma
+import lzma
 import os
 
 from oslo_config import cfg

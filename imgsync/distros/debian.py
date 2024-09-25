@@ -43,7 +43,7 @@ class Debian(distros.BaseDistro):
         base_url = self.url
 
         checksum_file = base_url + "SHA512SUMS"
-        checksum_file = requests.get(checksum_file)
+        checksum_file = requests.get(checksum_file, timeout=10)
         if checksum_file.status_code != 200:
             LOG.error("Could not get checksums file %s" % checksum_file.url)
             return

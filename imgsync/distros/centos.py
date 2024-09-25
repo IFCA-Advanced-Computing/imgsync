@@ -67,7 +67,7 @@ class CentOS(distros.BaseDistro):
 
     def _get_index(self):
         url = self.url + "image-index"
-        r = requests.get(url)
+        r = requests.get(url, timeout=10)
         if r.ok:
             aux = r.text
         else:

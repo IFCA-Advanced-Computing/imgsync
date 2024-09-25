@@ -24,9 +24,11 @@ cfg_group = "keystone_auth"
 loading.register_auth_conf_options(CONF, cfg_group)
 loading.register_session_conf_options(CONF, cfg_group)
 
-opts = (loading.get_auth_common_conf_options() +
-        loading.get_session_conf_options() +
-        loading.get_auth_plugin_conf_options('password'))
+opts = (
+    loading.get_auth_common_conf_options()
+    + loading.get_session_conf_options()
+    + loading.get_auth_plugin_conf_options("password")
+)
 
 LOG = log.getLogger(__name__)
 
@@ -46,10 +48,9 @@ class GlanceClient(object):
     def _get_session(self):
         """Get an auth session."""
         auth_plugin = loading.load_auth_from_conf_options(CONF, cfg_group)
-        sess = loading.load_session_from_conf_options(CONF, cfg_group,
-                                                      auth=auth_plugin)
+        sess = loading.load_session_from_conf_options(CONF, cfg_group, auth=auth_plugin)
 
-        return glanceclient.Client('2', session=sess)
+        return glanceclient.Client("2", session=sess)
 
     @property
     def images(self):
@@ -62,17 +63,43 @@ class GlanceClient(object):
     def get_image_by_name(self, name):
         return self.images.get(name)
 
-    def upload(self, location, name, architecture, file_format,
-               container_format, checksum, os_distro, os_version,
-               os_type="Linux"):
+    def upload(
+        self,
+        location,
+        name,
+        architecture,
+        file_format,
+        container_format,
+        checksum,
+        os_distro,
+        os_version,
+        os_type="Linux",
+    ):
 
-        self.upload_with_fd(open(location.name, 'rb'), name, architecture,
-                            file_format, container_format, checksum, os_distro,
-                            os_version, os_type=os_type)
+        self.upload_with_fd(
+            open(location.name, "rb"),
+            name,
+            architecture,
+            file_format,
+            container_format,
+            checksum,
+            os_distro,
+            os_version,
+            os_type=os_type,
+        )
 
-    def upload_with_fd(self, fd, name, architecture, file_format,
-                       container_format, checksum, os_distro, os_version,
-                       os_type="Linux"):
+    def upload_with_fd(
+        self,
+        fd,
+        name,
+        architecture,
+        file_format,
+        container_format,
+        checksum,
+        os_distro,
+        os_version,
+        os_type="Linux",
+    ):
 
         os_version = str(os_version)
 
@@ -87,14 +114,19 @@ class GlanceClient(object):
         properties["source"] = "imgsync"
 
         image = self.client.images.create(
-            name=name, architecture=architecture,
+            name=name,
+            architecture=architecture,
             disk_format=file_format,
             container_format=container_format,
             visibility="public",
-            os_distro=os_distro, distribution=os_distro,
-            os_version=os_version, version=os_version,
-            os_type=os_type, type=os_type,
-            **properties)
+            os_distro=os_distro,
+            distribution=os_distro,
+            os_version=os_version,
+            version=os_version,
+            os_type=os_type,
+            type=os_type,
+            **properties
+        )
 
         try:
             self.client.images.upload(image.id, fd)

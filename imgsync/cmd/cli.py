@@ -25,7 +25,7 @@ CONF = cfg.CONF
 
 def main():
     imgsync.config.parse_args(sys.argv)
-    log.setup(cfg.CONF, 'imgsync')
+    log.setup(cfg.CONF, "imgsync")
     imgsync.commands.CommandManager().execute()
 
 

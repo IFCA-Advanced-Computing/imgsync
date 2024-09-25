@@ -27,10 +27,13 @@ CONF = cfg.CONF
 def add_command_parsers(subparsers):
     SyncCommand(subparsers)
 
-command_opt = cfg.SubCommandOpt('command',
-                                title='Commands',
-                                help='Show available commands.',
-                                handler=add_command_parsers)
+
+command_opt = cfg.SubCommandOpt(
+    "command",
+    title="Commands",
+    help="Show available commands.",
+    handler=add_command_parsers,
+)
 
 CONF.register_cli_opt(command_opt)
 
@@ -47,8 +50,7 @@ class Command(object):
 
 
 class SyncCommand(Command):
-    def __init__(self, parser, name="sync",
-                 cmd_help="Syncrhonize configured images"):
+    def __init__(self, parser, name="sync", cmd_help="Syncrhonize configured images"):
         super(SyncCommand, self).__init__(parser, name, cmd_help)
         self.manager = distros.DistroManager()
 

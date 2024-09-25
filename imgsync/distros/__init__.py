@@ -116,7 +116,7 @@ class BaseDistro(object):
         """
         with tempfile.NamedTemporaryFile(suffix=".imgsync", delete=False) as location:
             try:
-                response = requests.get(url, stream=True)
+                response = requests.get(url, stream=True, timeout=10)
             except Exception as e:
                 os.remove(location.name)
                 LOG.error(e)

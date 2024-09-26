@@ -15,27 +15,24 @@
 # under the License.
 
 import abc
-import os
 
 import dateutil.parser
 from oslo_config import cfg
 from oslo_log import log
 import requests
-import six
 
-from imgsync import distros
+from imgsync.distros import base
 
 CONF = cfg.CONF
 LOG = log.getLogger(__name__)
 
 
-@six.add_metaclass(abc.ABCMeta)
-class Ubuntu(distros.BaseDistro):
+class Ubuntu(base.BaseDistro, metaclass=abc.ABCMeta):
     """Base class for all Ubuntu distributions."""
 
-    url = None
     ubuntu_release = None
     version = None
+    name = "ubuntu"
 
     def __init__(self):
         """Initialize the Ubuntu object."""
@@ -49,7 +46,12 @@ class Ubuntu(distros.BaseDistro):
     @property
     def filename(self):
         """Get the filename of the image, based on the Ubuntu release."""
-        return "%s-server-cloudimg-amd64-disk1.img" % self.ubuntu_release
+        return "%s-server-cloudimg-amd64.img" % self.ubuntu_release
+
+    @property
+    def url(self):
+        """Get the URL of the Ubuntu cloud images."""
+        return "https://repo.ifca.es/ubuntu-cloud-images/%s/" % self.ubuntu_release
 
     def _sync_latest(self):
         """Sync the latest image."""
@@ -76,37 +78,12 @@ class Ubuntu(distros.BaseDistro):
 
         prefix = CONF.prefix
         name = "%sUbuntu %s [%s]" % (prefix, self.version, revision)
+        sha = "sha256"
 
-        image = self.glance.get_image_by_name(name)
-        if image:
-            if image.get("imgsync.sha256") != checksum:
-                LOG.error(
-                    "Glance image chechsum (%s, %s)and official "
-                    "checksum %s missmatch.",
-                    image.id,
-                    image.get("imgsync.sha256"),
-                    checksum,
-                )
-            else:
-                LOG.info("Image already downloaded and synchroniced")
-            return
-
-        location = None
-        try:
-            location = self._download_one(url, ("sha256", checksum))
-            self.glance.upload(
-                location,
-                name,
-                architecture=architecture,
-                file_format=file_format,
-                container_format="bare",
-                checksum={"sha256": checksum},
-                os_distro="ubuntu",
-                os_version=self.version,
+        if self._needs_download(name, sha, checksum):
+            self._sync_with_glance(
+                name, url, "ubuntu", sha, checksum, architecture, file_format
             )
-        finally:
-            if location is not None:
-                os.remove(location.name)
 
     def _sync_all(self):
         """Sync all images."""
@@ -114,53 +91,33 @@ class Ubuntu(distros.BaseDistro):
         self._sync_latest()
 
 
-class Ubuntu14(Ubuntu):
-    """Class to sync Ubuntu 14.04."""
-
-    url = "https://repo.ifca.es/ubuntu-cloud-images/trusty/"
-    ubuntu_release = "trusty"
-    version = "14.04"
-
-
-class Ubuntu16(Ubuntu):
-    """Class to sync Ubuntu 16.04."""
-
-    url = "https://repo.ifca.es/ubuntu-cloud-images/xenial/"
-    ubuntu_release = "xenial"
-    version = "16.04"
-
-
 class Ubuntu18(Ubuntu):
     """Class to sync Ubuntu 18.04."""
 
-    url = "https://repo.ifca.es/ubuntu-cloud-images/bionic/"
     ubuntu_release = "bionic"
     version = "18.04"
-    filename = "%s-server-cloudimg-amd64.img" % ubuntu_release
+    name = "ubuntu18"
 
 
 class Ubuntu20(Ubuntu):
     """Class to sync Ubuntu 20.04."""
 
-    url = "https://repo.ifca.es/ubuntu-cloud-images/focal/"
     ubuntu_release = "focal"
     version = "20.04"
-    filename = "%s-server-cloudimg-amd64.img" % ubuntu_release
+    name = "ubuntu20"
 
 
 class Ubuntu22(Ubuntu):
     """Class to sync Ubuntu 22.04."""
 
-    url = "https://repo.ifca.es/ubuntu-cloud-images/jammy/"
     ubuntu_release = "jammy"
     version = "22.04"
-    filename = "%s-server-cloudimg-amd64.img" % ubuntu_release
+    name = "ubuntu22"
 
 
 class Ubuntu24(Ubuntu):
     """Class to sync Ubuntu 24.04."""
 
-    url = "https://repo.ifca.es/ubuntu-cloud-images/jammy/"
     ubuntu_release = "noble"
     version = "24.04"
-    filename = "%s-server-cloudimg-amd64.img" % ubuntu_release
+    name = "ubuntu24"

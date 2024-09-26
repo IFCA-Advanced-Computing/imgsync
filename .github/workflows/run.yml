@@ -23,4 +23,4 @@ jobs:
         python -m pip install --upgrade pip
         python -m pip install .
     - name: Run imgsync in download mode only
-      run: glance-imgsync --download-only
+      run: glance-imgsync --download-only sync

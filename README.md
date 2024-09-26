@@ -8,11 +8,6 @@ custom properties and prefixes for all the synced images.
 
 Currently the following images repositories are supported:
 
-### CentOS
-
-- CentOS 6: http://cloud.centos.org/centos/6/images/
-- CentOS 7: http://cloud.centos.org/centos/7/images/
-
 ### Debian
 
 - Debian 11: https://cloud.debian.org/images/cloud/bullseye/
@@ -21,8 +16,6 @@ Currently the following images repositories are supported:
 
 ### Ubuntu
 
-- Ubuntu 14.04: https://cloud-images.ubuntu.com/trusty/
-- Ubuntu 16.04: https://cloud-images.ubuntu.com/xenial/
 - Ubuntu 18.04: https://cloud-images.ubuntu.com/bionic/
 - Ubuntu 20.04: https://cloud-images.ubuntu.com/focal/
 - Ubuntu 22.04: https://cloud-images.ubuntu.com/jammy/
@@ -56,11 +49,6 @@ adjust it your your needs. Take into account the following:
 
 - The list of images to be downloaded is configured via the `distributions`
   option.
-
-- CentOS distributions define additional options to allow the download of
-  all the published images, or just the latest one. This is configured in
-  the `[centos6]` and `[centos6]` sections. This is not possible for Debian and
-  Ubuntu.
 
 ### Image properties
 

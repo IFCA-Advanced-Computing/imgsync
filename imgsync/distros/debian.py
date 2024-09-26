@@ -78,7 +78,7 @@ class Debian(base.BaseDistro, metaclass=abc.ABCMeta):
             LOG.error("Could not find checksum for %s" % filename)
             return
 
-        LOG.info("Downloading %s", filename)
+        LOG.info("Syncing %s", filename)
 
         url = base_url + filename
         architecture = "x86_64"

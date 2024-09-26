@@ -66,6 +66,8 @@ class BaseDistro(object, metaclass=abc.ABCMeta):
         :param checksum: tuple in the form (checksum_name, checksum_value)
         :returns: temporary file object
         """
+        LOG.info("Downloading %s", url)
+
         with tempfile.NamedTemporaryFile(suffix=".imgsync", delete=False) as location:
             try:
                 response = requests.get(url, stream=True, timeout=10)

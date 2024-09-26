@@ -56,7 +56,9 @@ class Ubuntu(base.BaseDistro, metaclass=abc.ABCMeta):
     def _sync_latest(self):
         """Sync the latest image."""
         filename = self.filename
-        LOG.info("Downloading %s", filename)
+
+        LOG.info("Syncing %s", filename)
+
         base_url = self.url + "current/"
         checksum_file = base_url + "SHA256SUMS"
         checksum_file = requests.get(checksum_file, timeout=10)

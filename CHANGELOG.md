@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.1](https://github.com/IFCA-Advanced-Computing/imgsync/compare/v2.0.0...v2.0.1) (2024-09-26)
+
+
+### Miscellaneous Chores
+
+* release 2.0.1 ([9d29a66](https://github.com/IFCA-Advanced-Computing/imgsync/commit/9d29a6676eb74efb22595a284f86e7952184e1db))
+
 ## [2.0.0](https://github.com/IFCA-Advanced-Computing/imgsync/compare/v1.3.0...v2.0.0) (2024-09-26)
 
 

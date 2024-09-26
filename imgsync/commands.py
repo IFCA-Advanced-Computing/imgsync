@@ -1,3 +1,5 @@
+"""Handle imgsync commands."""
+
 # Copyright (c) 2016 Alvaro Lopez Garcia
 
 # Licensed under the Apache License, Version 2.0 (the "License"); you may
@@ -25,6 +27,7 @@ CONF = cfg.CONF
 
 
 def add_command_parsers(subparsers):
+    """Add command parsers to the global parser."""
     SyncCommand(subparsers)
 
 
@@ -39,27 +42,38 @@ CONF.register_cli_opt(command_opt)
 
 
 class Command(object):
+    """Base class for imgsync commands."""
+
     def __init__(self, parser, name, cmd_help):
+        """Initialize the command."""
         self.name = name
         self.cmd_help = cmd_help
         self.parser = parser.add_parser(name, help=cmd_help)
         self.parser.set_defaults(func=self.run)
 
     def run(self):
+        """Run the command. This has to be implemented by the subclass."""
         raise NotImplementedError("Method must me overriden on subclass")
 
 
 class SyncCommand(Command):
+    """Sync command."""
+
     def __init__(self, parser, name="sync", cmd_help="Syncrhonize configured images"):
+        """Initialize the sync command."""
         super(SyncCommand, self).__init__(parser, name, cmd_help)
         self.manager = distros.DistroManager()
 
     def run(self):
+        """Run the sync command."""
         self.manager.sync()
 
 
 class CommandManager(object):
+    """Command manager."""
+
     def execute(self):
+        """Execute the command."""
         try:
             CONF.command.func()
         except exception.ImgSyncException as e:

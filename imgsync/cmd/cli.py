@@ -1,3 +1,5 @@
+"""CLI for imgsync."""
+
 # Copyright (c) 2016 Alvaro Lopez Garcia
 
 # Licensed under the Apache License, Version 2.0 (the "License"); you may
@@ -24,6 +26,7 @@ CONF = cfg.CONF
 
 
 def main():
+    """Run imgsync CLI."""
     imgsync.config.parse_args(sys.argv)
     log.setup(cfg.CONF, "imgsync")
     imgsync.commands.CommandManager().execute()

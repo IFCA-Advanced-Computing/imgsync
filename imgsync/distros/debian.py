@@ -1,3 +1,5 @@
+"""Module to sync Debian images."""
+
 # Copyright (c) 2016 Alvaro Lopez Garcia
 
 # Licensed under the Apache License, Version 2.0 (the "License"); you may
@@ -29,17 +31,22 @@ LOG = log.getLogger(__name__)
 
 @six.add_metaclass(abc.ABCMeta)
 class Debian(distros.BaseDistro):
+    """Base class for all Debian distributions."""
+
     url = None
 
     def __init__(self):
+        """Initialize the Debian object."""
         super(Debian, self).__init__()
         self.filename = None
 
     @property
     def what(self):
+        """Get what to sync. In debian we can only sync latest."""
         return "latest"
 
     def _sync_latest(self):
+        """Sync the latest image."""
         base_url = self.url
 
         checksum_file = base_url + "SHA512SUMS"
@@ -102,23 +109,30 @@ class Debian(distros.BaseDistro):
                 os.remove(location.name)
 
     def _sync_all(self):
+        """Sync all images."""
         LOG.warn("Sync all not supported for Ubuntu, syncing " "the latest one.")
         self._sync_latest()
 
 
 class Debian11(Debian):
+    """Class to sync Debian 11."""
+
     debian_release = "bullseye"
     version = "11"
     url = "https://cloud.debian.org/images/cloud/%s/latest/" % debian_release
 
 
 class Debian12(Debian):
+    """Class to sync Debian 12."""
+
     debian_release = "bookworm"
     version = "12"
     url = "https:///cloud.debian.org/images/cloud/%s/latest/" % debian_release
 
 
 class DebianTesting(Debian):
+    """Class to sync Debian testing."""
+
     debian_release = "sid"
     version = "tesging"
     url = "https:///cloud.debian.org/images/cloud/%s/latest/" % debian_release

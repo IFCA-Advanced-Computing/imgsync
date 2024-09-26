@@ -1,3 +1,5 @@
+"""Exception handling for imgsync."""
+
 # Copyright (c) 2016 Alvaro Lopez Garcia
 
 # Licensed under the Apache License, Version 2.0 (the "License"); you may
@@ -18,9 +20,12 @@ LOG = log.getLogger(__name__)
 
 
 class ImgSyncException(Exception):
+    """Base ImgSync Exception."""
+
     msg_fmt = "An unknown exception occurred."
 
     def __init__(self, message=None, **kwargs):
+        """Initialize the exception with the given message and kwargs."""
         self.kwargs = kwargs
 
         if not message:
@@ -38,8 +43,12 @@ class ImgSyncException(Exception):
 
 
 class ImageDownloadFailed(ImgSyncException):
+    """Image download failed."""
+
     msg_fmt = "Cannot get image, reason: (%(code)s) %(reason)s"
 
 
 class ImageVerificationFailed(ImgSyncException):
+    """Image verification failed."""
+
     msg_fmt = "Image %(url)s verification failed %(expected)s != %(obtained)s"

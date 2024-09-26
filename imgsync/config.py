@@ -1,3 +1,5 @@
+"""Manage configuration loading for imgsync."""
+
 # Copyright (c) 2016 Alvaro Lopez Garcia
 
 # Licensed under the Apache License, Version 2.0 (the "License"); you may
@@ -19,4 +21,5 @@ log.register_options(cfg.CONF)
 
 
 def parse_args(argv, default_config_files=None):
+    """Parse command line arguments."""
     cfg.CONF(argv[1:], project="imgsync", default_config_files=default_config_files)

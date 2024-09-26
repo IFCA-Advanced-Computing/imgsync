@@ -1,3 +1,5 @@
+"""imgsync glance client."""
+
 # Copyright (c) 2016 Alvaro Lopez Garcia
 
 # Licensed under the Apache License, Version 2.0 (the "License"); you may
@@ -34,12 +36,16 @@ LOG = log.getLogger(__name__)
 
 
 class GlanceClient(object):
+    """Glance client."""
+
     def __init__(self):
+        """Initialize the Glance client."""
         self._images = None
         self._client = None
 
     @property
     def client(self):
+        """Get the glance client."""
         # Defer the client creation to when it is needed.
         if self._client is None:
             self._client = self._get_session()
@@ -54,6 +60,7 @@ class GlanceClient(object):
 
     @property
     def images(self):
+        """Get the images that are stored in glance, filtering by source."""
         if self._images is None:
             images = self.client.images.list(filters={"source": "imgsync"})
             images = {image.name: image for image in images}
@@ -61,6 +68,7 @@ class GlanceClient(object):
         return self._images
 
     def get_image_by_name(self, name):
+        """Get an image by name."""
         return self.images.get(name)
 
     def upload(
@@ -75,8 +83,8 @@ class GlanceClient(object):
         os_version,
         os_type="Linux",
     ):
-
-        self.upload_with_fd(
+        """Upload an image to glance."""
+        self._upload_with_fd(
             open(location.name, "rb"),
             name,
             architecture,
@@ -88,7 +96,7 @@ class GlanceClient(object):
             os_type=os_type,
         )
 
-    def upload_with_fd(
+    def _upload_with_fd(
         self,
         fd,
         name,
@@ -100,7 +108,7 @@ class GlanceClient(object):
         os_version,
         os_type="Linux",
     ):
-
+        """Inner function to upload an image to glance."""
         os_version = str(os_version)
 
         try:

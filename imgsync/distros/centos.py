@@ -1,3 +1,5 @@
+"""Module to sync CentOS images."""
+
 # Copyright (c) 2016 Alvaro Lopez Garcia
 
 # Licensed under the Apache License, Version 2.0 (the "License"); you may
@@ -56,9 +58,12 @@ CONF.register_opts(c7_opts, group="centos7")
 
 @six.add_metaclass(abc.ABCMeta)
 class CentOS(distros.BaseDistro):
+    """Base class for all CentOS distributions."""
+
     url = None
 
     def __init__(self):
+        """Initialize the CentOS object."""
         super(CentOS, self).__init__()
         self._index = None
         self._get_index()
@@ -66,6 +71,7 @@ class CentOS(distros.BaseDistro):
         self._sections.sort()
 
     def _get_index(self):
+        """Get the index file."""
         url = self.url + "image-index"
         r = requests.get(url, timeout=10)
         if r.ok:
@@ -78,6 +84,7 @@ class CentOS(distros.BaseDistro):
         self._index = parser
 
     def _get_url_from_section(self, section):
+        """Get the URL from a section inside the index file."""
         filename = self._index.get(section, "file")
         name = self._index.get(section, "name")
         revision = self._index.get(section, "revision")
@@ -87,6 +94,7 @@ class CentOS(distros.BaseDistro):
         return filename, name, revision, arch, file_format, checksum
 
     def _sync_one(self, section):
+        """Synchronize one image."""
         LOG.info("Downloading %s", section)
         (filename, name, revision, arch, file_format, checksum) = (
             self._get_url_from_section(section)
@@ -129,33 +137,43 @@ class CentOS(distros.BaseDistro):
                 os.remove(location.name)
 
     def _sync_all(self):
+        """Sync all images."""
         for aux in self._sections:
             self._sync_one(aux)
 
     def _sync_latest(self):
+        """Sync the latest image."""
         aux = self._sections[-1]
         self._sync_one(aux)
 
 
 class CentOS6(CentOS):
+    """Class to sync CentOS 6 images."""
+
     url = "http://cloud.centos.org/centos/6/images/"
     version = 6
 
     def __init__(self):
+        """Initialize the CentOS6 object."""
         super(CentOS6, self).__init__()
 
     @property
     def what(self):
+        """Get what to sync."""
         return CONF.centos6.download
 
 
 class CentOS7(CentOS):
+    """Class to sync CentOS 7 images."""
+
     url = "http://cloud.centos.org/centos/7/images/"
     version = 7
 
     def __init__(self):
+        """Initialize the CentOS7 object."""
         super(CentOS7, self).__init__()
 
     @property
     def what(self):
+        """Get what to sync."""
         return CONF.centos7.download

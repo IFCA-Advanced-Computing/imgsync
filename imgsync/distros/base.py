@@ -91,6 +91,7 @@ class BaseDistro(object, metaclass=abc.ABCMeta):
                     location.flush()
 
         self.verify_checksum(location, url, checksum, url)
+        return location
 
     def verify_checksum(self, location, name, checksum, url):
         """Verify the image's checksum."""

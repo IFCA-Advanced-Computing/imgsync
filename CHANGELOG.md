@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.1.0](https://github.com/IFCA-Advanced-Computing/imgsync/compare/v2.0.1...v2.1.0) (2024-09-26)
+
+
+### Features
+
+* improve logging ([d560b8c](https://github.com/IFCA-Advanced-Computing/imgsync/commit/d560b8cd8e0dbbaf641f62b36d6f28290e1381a4))
+
+
+### Bug Fixes
+
+* return location after downloading ([22d03c3](https://github.com/IFCA-Advanced-Computing/imgsync/commit/22d03c3a44345429f84b2e7ba700d7ebaa7c54e1))
+
 ## [2.0.1](https://github.com/IFCA-Advanced-Computing/imgsync/compare/v2.0.0...v2.0.1) (2024-09-26)
 
 

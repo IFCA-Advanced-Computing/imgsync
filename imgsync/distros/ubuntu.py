@@ -1,3 +1,5 @@
+"""Ubuntu distros for imgsync."""
+
 # Copyright (c) 2016 Alvaro Lopez Garcia
 
 # Licensed under the Apache License, Version 2.0 (the "License"); you may
@@ -29,22 +31,28 @@ LOG = log.getLogger(__name__)
 
 @six.add_metaclass(abc.ABCMeta)
 class Ubuntu(distros.BaseDistro):
+    """Base class for all Ubuntu distributions."""
+
     url = None
     ubuntu_release = None
     version = None
 
     def __init__(self):
+        """Initialize the Ubuntu object."""
         super(Ubuntu, self).__init__()
 
     @property
     def what(self):
+        """Get what to sync. In Ubuntu we can only sync latest."""
         return "latest"
 
     @property
     def filename(self):
+        """Get the filename of the image, based on the Ubuntu release."""
         return "%s-server-cloudimg-amd64-disk1.img" % self.ubuntu_release
 
     def _sync_latest(self):
+        """Sync the latest image."""
         filename = self.filename
         LOG.info("Downloading %s", filename)
         base_url = self.url + "current/"
@@ -101,23 +109,30 @@ class Ubuntu(distros.BaseDistro):
                 os.remove(location.name)
 
     def _sync_all(self):
+        """Sync all images."""
         LOG.warn("Sync all not supported for Ubuntu, syncing " "the latest one.")
         self._sync_latest()
 
 
 class Ubuntu14(Ubuntu):
+    """Class to sync Ubuntu 14.04."""
+
     url = "https://repo.ifca.es/ubuntu-cloud-images/trusty/"
     ubuntu_release = "trusty"
     version = "14.04"
 
 
 class Ubuntu16(Ubuntu):
+    """Class to sync Ubuntu 16.04."""
+
     url = "https://repo.ifca.es/ubuntu-cloud-images/xenial/"
     ubuntu_release = "xenial"
     version = "16.04"
 
 
 class Ubuntu18(Ubuntu):
+    """Class to sync Ubuntu 18.04."""
+
     url = "https://repo.ifca.es/ubuntu-cloud-images/bionic/"
     ubuntu_release = "bionic"
     version = "18.04"
@@ -125,6 +140,8 @@ class Ubuntu18(Ubuntu):
 
 
 class Ubuntu20(Ubuntu):
+    """Class to sync Ubuntu 20.04."""
+
     url = "https://repo.ifca.es/ubuntu-cloud-images/focal/"
     ubuntu_release = "focal"
     version = "20.04"
@@ -132,6 +149,8 @@ class Ubuntu20(Ubuntu):
 
 
 class Ubuntu22(Ubuntu):
+    """Class to sync Ubuntu 22.04."""
+
     url = "https://repo.ifca.es/ubuntu-cloud-images/jammy/"
     ubuntu_release = "jammy"
     version = "22.04"
@@ -139,6 +158,8 @@ class Ubuntu22(Ubuntu):
 
 
 class Ubuntu24(Ubuntu):
+    """Class to sync Ubuntu 24.04."""
+
     url = "https://repo.ifca.es/ubuntu-cloud-images/jammy/"
     ubuntu_release = "noble"
     version = "24.04"

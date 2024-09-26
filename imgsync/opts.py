@@ -1,3 +1,5 @@
+"""Options for imgsync for oslo_config."""
+
 # Copyright (c) 2016 Alvaro Lopez Garcia
 
 # Licensed under the Apache License, Version 2.0 (the "License"); you may
@@ -18,6 +20,7 @@ import imgsync.glance
 
 
 def list_opts():
+    """Return a list of oslo_config options available in imgsync."""
     return [
         ("DEFAULT", imgsync.distros.opts),
         ("centos6", imgsync.distros.centos.c6_opts),

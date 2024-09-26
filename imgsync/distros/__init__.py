@@ -1,3 +1,5 @@
+"""Base classes and options for the distros."""
+
 # Copyright (c) 2016 Alvaro Lopez Garcia
 
 # Licensed under the Apache License, Version 2.0 (the "License"); you may
@@ -72,16 +74,21 @@ LOG = log.getLogger(__name__)
 
 @six.add_metaclass(abc.ABCMeta)
 class BaseDistro(object):
+    """Base class for all distributions."""
+
     url = None
 
     def __init__(self):
+        """Initialize the BaseDistro object."""
         self.glance = glance.GLANCE
 
     @abc.abstractproperty
     def what(self):
+        """Get what to sync. This has to be implemented by the child class."""
         return None
 
     def sync(self):
+        """Sync the images, calling the method that is needed."""
         if self.what == "all":
             self._sync_all()
         elif self.what == "latest":
@@ -90,6 +97,14 @@ class BaseDistro(object):
             LOG.warn("Nothing to do")
 
     def _get_file_checksum(self, path, block_size=2**20):
+        """Get the checksum of a file.
+
+        Get the checksum of a file using sha512.
+
+        :param path: the path to the file
+        :param block_size: block size to use when reading the file
+        :returns: sha512 object
+        """
         sha512 = hashlib.sha512()
         with open(path, "rb") as f:
             buf = f.read(block_size)
@@ -105,11 +120,13 @@ class BaseDistro(object):
         checksum,
     ):
         """Verify the image's checksum."""
+        # TODO(aloga): not implemented yet
 
     def _download_one(self, url, checksum):
         """Download a file.
 
         Download a file from a url and return a temporary file object.
+
         :param url: the url to download
         :param checksum: tuple in the form (checksum_name, checksum_value)
         :returns: temporary file object
@@ -160,7 +177,10 @@ class BaseDistro(object):
 
 
 class DistroManager(object):
+    """Class to manage the distributions."""
+
     def __init__(self):
+        """Initialize the DistroManager object."""
         self.distros = stevedore.NamedExtensionManager(
             "imgsync.distros",
             CONF.distributions,
@@ -169,5 +189,6 @@ class DistroManager(object):
         )
 
     def sync(self):
+        """Sync the distributions."""
         LOG.info("Syncing %s", self.distros.names())
         self.distros.map_method("sync")

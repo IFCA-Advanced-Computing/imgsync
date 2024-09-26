@@ -15,14 +15,18 @@ Currently the following images repositories are supported:
 
 ### Debian
 
-- Debian 9: https://cdimage.debian.org/cdimage/openstack/current-9/
-- Debian testing: https://cdimage.debian.org/cdimage/openstack/testing/
+- Debian 11: https://cloud.debian.org/images/cloud/bullseye/
+- Debian 12: https://cloud.debian.org/images/cloud/bookworm/
+- Debian testing: https://cloud.debian.org/images/cloud/sid/
 
 ### Ubuntu
 
 - Ubuntu 14.04: https://cloud-images.ubuntu.com/trusty/
 - Ubuntu 16.04: https://cloud-images.ubuntu.com/xenial/
 - Ubuntu 18.04: https://cloud-images.ubuntu.com/bionic/
+- Ubuntu 20.04: https://cloud-images.ubuntu.com/focal/
+- Ubuntu 22.04: https://cloud-images.ubuntu.com/jammy/
+- Ubuntu 24.04: https://cloud-images.ubuntu.com/noble
 
 ## Installation
 

@@ -54,9 +54,10 @@ ubuntu16 = "imgsync.distros.ubuntu:Ubuntu16"
 ubuntu18 = "imgsync.distros.ubuntu:Ubuntu18"
 ubuntu20 = "imgsync.distros.ubuntu:Ubuntu20"
 ubuntu22 = "imgsync.distros.ubuntu:Ubuntu22"
-debian10 = "imgsync.distros.debian:Debian10"
+ubuntu24 = "imgsync.distros.ubuntu:Ubuntu24"
 debian11 = "imgsync.distros.debian:Debian11"
 debian12 = "imgsync.distros.debian:Debian12"
+debiantesting = "imgsync.distros.debian:DebianTesting"
 
 
 [tool.poetry.dependencies]

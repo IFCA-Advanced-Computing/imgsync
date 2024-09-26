@@ -106,19 +106,19 @@ class Debian(distros.BaseDistro):
         self._sync_latest()
 
 
-class Debian10(Debian):
-    debian_release = "buster"
-    version = "10"
-    url = "https://repo.ifca.es/debian-cdimage-cloud/%s/latest/" % debian_release
-
-
 class Debian11(Debian):
     debian_release = "bullseye"
     version = "11"
-    url = "https://repo.ifca.es/debian-cdimage-cloud/%s/latest/" % debian_release
+    url = "https://cloud.debian.org/images/cloud/%s/latest/" % debian_release
 
 
 class Debian12(Debian):
     debian_release = "bookworm"
     version = "12"
-    url = "https://repo.ifca.es/debian-cdimage-cloud/%s/latest/" % debian_release
+    url = "https:///cloud.debian.org/images/cloud/%s/latest/" % debian_release
+
+
+class DebianTesting(Debian):
+    debian_release = "sid"
+    version = "tesging"
+    url = "https:///cloud.debian.org/images/cloud/%s/latest/" % debian_release

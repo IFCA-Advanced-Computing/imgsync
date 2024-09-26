@@ -46,26 +46,11 @@ glance-imgsync = "imgsync.cmd.cli:main"
 imgsync = "deepaas.opts:list_opts"
 
 
-[tool.poetry.plugins."imgsync.distros"]
-centos6 = "imgsync.distros.centos:CentOS6"
-centos7 = "imgsync.distros.centos:CentOS7"
-ubuntu14 = "imgsync.distros.ubuntu:Ubuntu14"
-ubuntu16 = "imgsync.distros.ubuntu:Ubuntu16"
-ubuntu18 = "imgsync.distros.ubuntu:Ubuntu18"
-ubuntu20 = "imgsync.distros.ubuntu:Ubuntu20"
-ubuntu22 = "imgsync.distros.ubuntu:Ubuntu22"
-ubuntu24 = "imgsync.distros.ubuntu:Ubuntu24"
-debian11 = "imgsync.distros.debian:Debian11"
-debian12 = "imgsync.distros.debian:Debian12"
-debiantesting = "imgsync.distros.debian:DebianTesting"
-
-
 [tool.poetry.dependencies]
 python = "^3.10"
 requests = "^2.32.3"
 oslo-config = "^9.6.0"
 oslo-log = "^6.1.2"
-six = "^1.16.0"
 dateutils = "^0.6.12"
 python-glanceclient = "^4.7.0"
 keystoneauth1 = "^5.8.0"

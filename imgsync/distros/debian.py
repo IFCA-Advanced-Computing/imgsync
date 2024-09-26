@@ -16,34 +16,42 @@
 
 import abc
 import datetime
-import os
 
 from oslo_config import cfg
 from oslo_log import log
 import requests
-import six
 
-from imgsync import distros
+from imgsync.distros import base
 
 CONF = cfg.CONF
 LOG = log.getLogger(__name__)
 
 
-@six.add_metaclass(abc.ABCMeta)
-class Debian(distros.BaseDistro):
+class Debian(base.BaseDistro, metaclass=abc.ABCMeta):
     """Base class for all Debian distributions."""
 
-    url = None
+    debian_release = None
+    version = None
+    name = "debian"
 
     def __init__(self):
         """Initialize the Debian object."""
         super(Debian, self).__init__()
-        self.filename = None
 
     @property
     def what(self):
         """Get what to sync. In debian we can only sync latest."""
         return "latest"
+
+    @property
+    def url(self):
+        """Get the URL of the Debian cloud images."""
+        return "https://cloud.debian.org/images/cloud/%s/latest/" % self.debian_release
+
+    @property
+    def filename(self):
+        """Get the filename of the image, based on the Debian release."""
+        return "debian-%s-genericcloud-amd64.qcow2" % self.version
 
     def _sync_latest(self):
         """Sync the latest image."""
@@ -59,12 +67,16 @@ class Debian(distros.BaseDistro):
             [list(reversed(line.split())) for line in checksum_file.text.splitlines()]
         )
 
-        filename = "debian-%s-genericcloud-amd64.qcow2" % self.version
+        filename = self.filename
 
+        checksum = None
         for k, v in aux.items():
             if k == filename:
                 checksum = v
                 break
+        if not checksum:
+            LOG.error("Could not find checksum for %s" % filename)
+            return
 
         LOG.info("Downloading %s", filename)
 
@@ -75,38 +87,12 @@ class Debian(distros.BaseDistro):
         revision = datetime.datetime.now().strftime("%Y%m%d")
         prefix = CONF.prefix
         name = "%sDebian %s [%s]" % (prefix, self.version, revision)
+        sha = "sha512"
 
-        image = self.glance.get_image_by_name(name)
-        if image:
-            if image.get("imgsync.sha512") != checksum:
-                LOG.error(
-                    "Glance image chechsum (%s, %s)and official "
-                    "checksum %s missmatch.",
-                    image.id,
-                    image.get("imgsync.sha512"),
-                    checksum,
-                )
-            else:
-                LOG.info("Image already downloaded and synchroniced")
-            return
-
-        location = None
-        try:
-            location = self._download_one(url, ("sha512", checksum))
-            self.glance.upload(
-                location,
-                name,
-                architecture=architecture,
-                file_format=file_format,
-                container_format="bare",
-                checksum={"sha512": checksum},
-                os_distro="ubuntu",
-                os_version=self.version,
+        if self._needs_download(name, sha, checksum):
+            self._sync_with_glance(
+                name, url, "debian", sha, checksum, architecture, file_format
             )
-            LOG.info("Synchronized %s", name)
-        finally:
-            if location is not None:
-                os.remove(location.name)
 
     def _sync_all(self):
         """Sync all images."""
@@ -119,7 +105,7 @@ class Debian11(Debian):
 
     debian_release = "bullseye"
     version = "11"
-    url = "https://cloud.debian.org/images/cloud/%s/latest/" % debian_release
+    name = "debian11"
 
 
 class Debian12(Debian):
@@ -127,12 +113,25 @@ class Debian12(Debian):
 
     debian_release = "bookworm"
     version = "12"
-    url = "https:///cloud.debian.org/images/cloud/%s/latest/" % debian_release
+    name = "debian12"
 
 
 class DebianTesting(Debian):
     """Class to sync Debian testing."""
 
     debian_release = "sid"
-    version = "tesging"
-    url = "https:///cloud.debian.org/images/cloud/%s/latest/" % debian_release
+    version = "testing"
+    name = "debian-testing"
+
+    @property
+    def url(self):
+        """Get the URL of the Debian cloud images."""
+        return (
+            "https://cloud.debian.org/images/cloud/%s/daily/latest/"
+            % self.debian_release
+        )
+
+    @property
+    def filename(self):
+        """Get the filename of the image, based on the Debian release."""
+        return "debian-%s-genericcloud-amd64-daily.qcow2" % self.debian_release

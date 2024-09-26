@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "imgsync"
-version = "1.3.0"
+version = "2.0.0"
 description = "imgsync will download sync images from several distribution repositories and send them to an OpenStack Image service (Glance)."
 readme  = "README.md"
 license = "Apache-2.0"

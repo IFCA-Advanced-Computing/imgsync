@@ -92,15 +92,8 @@ class BaseDistro(object, metaclass=abc.ABCMeta):
 
         self.verify_checksum(location, url, checksum, url)
 
-    def verify_checksum(
-        self,
-        location,
-        name,
-        checksum,
-        url
-    ):
+    def verify_checksum(self, location, name, checksum, url):
         """Verify the image's checksum."""
-
         checksum_map = {"sha512": hashlib.sha512, "sha256": hashlib.sha256}
         sha = checksum_map.get(checksum[0])()
         block_size = 2**20

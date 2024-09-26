@@ -136,3 +136,10 @@ class Ubuntu22(Ubuntu):
     ubuntu_release = "jammy"
     version = "22.04"
     filename = "%s-server-cloudimg-amd64.img" % ubuntu_release
+
+
+class Ubuntu24(Ubuntu):
+    url = "https://repo.ifca.es/ubuntu-cloud-images/jammy/"
+    ubuntu_release = "noble"
+    version = "24.04"
+    filename = "%s-server-cloudimg-amd64.img" % ubuntu_release
